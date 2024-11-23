@@ -1,7 +1,6 @@
 import fastify, { FastifyReply, FastifyRequest } from "fastify";
+import { appRoutes } from "./http/routes";
 
 export const app = fastify();
 
-app.get("/burguer", (request: FastifyRequest, reply: FastifyReply) => {
-  reply.status(200).send({ message: "test" });
-});
+app.register(appRoutes);
