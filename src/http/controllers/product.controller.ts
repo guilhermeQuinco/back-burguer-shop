@@ -1,5 +1,6 @@
-import { IBurguer } from "@/@types/Burguer";
+import { env } from "@/env";
 import * as burguerService from "@/services/burguerService";
+import axios from "axios";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { number, z } from "zod";
 
@@ -7,19 +8,44 @@ export async function createBurguer(
   request: FastifyRequest,
   reply: FastifyReply
 ) {
-  const createBurguerBodySchema = z.object({
-    name: z.string(),
-    price: z.number(),
-  });
-
-  const { name, price } = createBurguerBodySchema.parse(request.body);
-
-  const burguerData: any = {
-    name,
-    price,
-  };
-
   try {
+    const createBurguerBodySchema = z.object({
+      name: z.string(),
+      price: z.number(),
+      imageUrl: z.string(),
+    });
+
+    const { name, price, imageUrl } = createBurguerBodySchema.parse(
+      request.body
+    );
+
+    const burguerData: any = {
+      name,
+      price,
+      imageUrl,
+    };
+
+    const base64Image = burguerData.imageUrl;
+
+    // if (base64Image) {
+    //   const imageData = base64Image.replace(/^data:image\/\w+;base64,/, "");
+
+    //   const response = await axios.post(
+    //     "https://api.imgbb.com/1/upload",
+    //     {
+    //       key: env.IMG_BB_KEY,
+    //       image: imageData,
+    //     },
+    //     {
+    //       headers: {
+    //         "Content-Type": "multipart/form-data",
+    //       },
+    //     }
+    //   );
+
+    //   burguerData.imageUrl = response.data.data.url;
+    // }
+
     const createdBurguer = await burguerService.createBurguer(burguerData);
 
     return reply

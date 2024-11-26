@@ -7,6 +7,7 @@ export const createBurguer = async (burguerData: Prisma.BurguerCreateInput) => {
     data: {
       name: burguerData.name,
       price: burguerData.price,
+      imageUrl: burguerData.imageUrl,
     },
   });
 };
@@ -28,6 +29,7 @@ export const updateBurguer = async (
     data: {
       name: burguerData.name,
       price: burguerData.price,
+      imageUrl: burguerData.imageUrl,
     },
   });
 };
