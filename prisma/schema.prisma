@@ -23,6 +23,7 @@ model Item {
   
 
   cartItems Cart[]
+   orders OrderItem[]
 }
 
 
@@ -30,5 +31,26 @@ model Cart {
   id           Int  @id  @default(autoincrement())
   itemId       Int 
   item    Item @relation(fields: [itemId], references: [id])
-  quantity     Int
+  quantity     Int 
+}
+
+
+model Order {
+  id         Int  @id @default(autoincrement())
+  netAmount  Decimal
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  items OrderItem[]
+}
+
+model OrderItem {
+  id         Int  @id @default(autoincrement())
+  quantity    Int
+  orderId     Int
+  order      Order @relation(fields: [orderId], references: [id])
+  itemId      Int
+  item        Item @relation(fields: [itemId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime  @updatedAt
 }

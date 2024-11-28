@@ -49,13 +49,12 @@ export async function getItemById(
   request: FastifyRequest,
   reply: FastifyReply
 ) {
-  const getBurguerParamSchema = z.object({
-    id: z.coerce.number(),
-  });
-
-  const { id } = getBurguerParamSchema.parse(request.params);
-
   try {
+    const getBurguerParamSchema = z.object({
+      id: z.coerce.number(),
+    });
+
+    const { id } = getBurguerParamSchema.parse(request.params);
     const burguer = await itemService.getItemById(id);
 
     return reply.status(200).send(burguer);

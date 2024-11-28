@@ -6,7 +6,7 @@ export const addToCart = async (itemId: number, quantity: number) => {
   }
 
   try {
-    const burguer = await prisma.item.findFirst({
+    const item = await prisma.item.findFirst({
       where: {
         id: itemId,
       },
@@ -23,11 +23,24 @@ export const addToCart = async (itemId: number, quantity: number) => {
   });
 };
 
-// export const deleteItemFromCart = async (itemId: number) => {
-//   const item = await prisma.cart.findFirst({
-//     where:
-//   })
-// };
+export const deleteItemFromCart = async (id: number) => {
+  return await prisma.cart.delete({
+    where: {
+      id,
+    },
+  });
+};
+
+export const changeQuantity = async (id: number, quantity: number) => {
+  return await prisma.cart.update({
+    where: {
+      id,
+    },
+    data: {
+      quantity,
+    },
+  });
+};
 
 export const getCartItems = async () => {
   return await prisma.cart.findMany({

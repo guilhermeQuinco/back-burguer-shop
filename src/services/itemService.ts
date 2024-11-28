@@ -17,7 +17,7 @@ export const getItems = async () => {
 };
 
 export const getItemById = async (id: number) => {
-  return prisma.item.findUnique({ where: { id } });
+  return prisma.item.findFirst({ where: { id } });
 };
 
 export const updateItem = async (id: number, itemData: Partial<IItem>) => {
