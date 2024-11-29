@@ -2,6 +2,7 @@ import { FastifyInstance } from "fastify";
 
 import {
   addToCart,
+  changeQuantity,
   getCartItems,
   removeItemFromCart,
 } from "./controllers/cart.controller";
@@ -12,7 +13,7 @@ import {
   getItems,
   updateItem,
 } from "./controllers/item.controller";
-import { createOrder } from "./controllers/order.controller";
+import { createOrder, listOrders } from "./controllers/order.controller";
 
 export async function appRoutes(app: FastifyInstance) {
   app.post("/item", createItem);
@@ -23,7 +24,9 @@ export async function appRoutes(app: FastifyInstance) {
 
   app.post("/cart", addToCart);
   app.get("/cart", getCartItems);
+  app.put("/cart", changeQuantity);
   app.delete("/cart/:id", removeItemFromCart);
 
   app.post("/order", createOrder);
+  app.get("/order", listOrders);
 }

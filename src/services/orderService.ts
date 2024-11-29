@@ -37,3 +37,19 @@ export async function createOrder() {
     };
   });
 }
+
+export async function getOrders() {
+  return await prisma.order.findMany({
+    include: {
+      items: {
+        include: {
+          item: true,
+        },
+
+        orderBy: {
+          id: "desc",
+        },
+      },
+    },
+  });
+}

@@ -32,9 +32,15 @@ export const deleteItemFromCart = async (id: number) => {
 };
 
 export const changeQuantity = async (id: number, quantity: number) => {
-  return await prisma.cart.update({
+  const cartItem = await prisma.cart.findFirst({
     where: {
       id,
+    },
+  });
+
+  return await prisma.cart.update({
+    where: {
+      id: cartItem?.id,
     },
     data: {
       quantity,
