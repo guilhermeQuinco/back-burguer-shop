@@ -33,7 +33,7 @@ export const updateItem = async (id: number, itemData: Partial<IItem>) => {
 };
 
 export const deleteItem = async (id: number) => {
-  const item = await prisma.item.findUnique({ where: { id } });
+  const item = await prisma.item.findFirst({ where: { id } });
 
   if (!item) {
     throw new Error("Burguer not found");

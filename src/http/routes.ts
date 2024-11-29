@@ -13,7 +13,12 @@ import {
   getItems,
   updateItem,
 } from "./controllers/item.controller";
-import { createOrder, listOrders } from "./controllers/order.controller";
+import {
+  cancelOrder,
+  createOrder,
+  getOrdeById,
+  listOrders,
+} from "./controllers/order.controller";
 
 export async function appRoutes(app: FastifyInstance) {
   app.post("/item", createItem);
@@ -29,4 +34,6 @@ export async function appRoutes(app: FastifyInstance) {
 
   app.post("/order", createOrder);
   app.get("/order", listOrders);
+  app.get("/order/:id", getOrdeById);
+  app.delete("/order", cancelOrder);
 }

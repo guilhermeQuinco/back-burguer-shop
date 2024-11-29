@@ -53,3 +53,30 @@ export async function getOrders() {
     },
   });
 }
+
+export async function getOrderById(id: number) {
+  return await prisma.order.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      items: true,
+    },
+  });
+}
+
+export async function cancelOrder(orderId: number) {
+  return await prisma.$transaction(async (service) => {
+    await service.orderItem.deleteMany({
+      where: {
+        orderId,
+      },
+    });
+
+    await service.order.delete({
+      where: {
+        id: orderId,
+      },
+    });
+  });
+}
