@@ -1,5 +1,3 @@
-version: "3"
-
 services:
   burguer-shop:
     image: bitnami/postgresql
