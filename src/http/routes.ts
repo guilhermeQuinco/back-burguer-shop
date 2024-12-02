@@ -19,11 +19,16 @@ import {
   getOrdeById,
   listOrders,
 } from "./controllers/order.controller";
+import {
+  getCategories,
+  getCategoryItems,
+} from "./controllers/category.controller";
 
 export async function appRoutes(app: FastifyInstance) {
   app.post("/item", createItem);
   app.get("/item", getItems);
   app.get("/item/:id", getItemById);
+
   app.put("/item/:id", updateItem);
   app.delete("/item/:id", deleteItem);
 
@@ -36,4 +41,7 @@ export async function appRoutes(app: FastifyInstance) {
   app.get("/order", listOrders);
   app.get("/order/:id", getOrdeById);
   app.delete("/order", cancelOrder);
+
+  app.get("/category", getCategories);
+  app.get("/category/:slug", getCategoryItems);
 }
