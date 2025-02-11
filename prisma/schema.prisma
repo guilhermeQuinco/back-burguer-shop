@@ -66,3 +66,15 @@ model Category {
 
   items      Item[]
 }
+
+
+
+model User {
+    id              String        @id @default(uuid())
+    name            String  
+    email           String  
+    password_hash   String
+    createdAt       DateTime  @default(now()) 
+
+    @@map("users")
+} 

@@ -13,7 +13,11 @@ export const createItem = async (burguerData: Prisma.ItemCreateInput) => {
 };
 
 export const getItems = async () => {
-  return prisma.item.findMany();
+  return prisma.item.findMany({
+    orderBy: {
+      id: "desc",
+    },
+  });
 };
 
 export const getItemById = async (id: number) => {
