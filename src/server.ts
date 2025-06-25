@@ -1,5 +1,7 @@
+import "reflect-metadata";
 import { app } from "./app";
 import { env } from "./env";
+import "./container";
 
 app
   .listen({

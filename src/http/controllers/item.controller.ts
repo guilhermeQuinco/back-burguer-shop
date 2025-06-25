@@ -1,98 +1,95 @@
 import { env } from "@/env";
 import * as itemService from "@/services/itemService";
+import { CreateItemUseCase } from "@/use-cases/item/create-item/cretate-item.use-case";
 import axios from "axios";
 import { FastifyReply, FastifyRequest } from "fastify";
+import { injectable } from "tsyringe";
 import { number, z } from "zod";
 
-export async function createItem(request: FastifyRequest, reply: FastifyReply) {
-  try {
-    const createItemBodySchema = z.object({
+export class ItemController {
+  constructor(private readonly createItemUseCase: CreateItemUseCase) {}
+
+  async create(request: FastifyRequest, reply: FastifyReply) {
+    const schema = z.object({
       name: z.string(),
       price: z.number(),
-      description: z.string(),
-      imageUrl: z.string(),
     });
 
-    const { name, price, imageUrl, description } = createItemBodySchema.parse(
-      request.body
-    );
+    const { name, price } = schema.parse(request.body);
 
-    const itemData: any = {
-      name,
-      price,
-      description,
-      imageUrl,
-    };
+    const item = await this.createItemUseCase.execute({ name, price });
 
-    const createdBurguer = await itemService.createItem(itemData);
-
-    return reply
-      .status(201)
-      .send({ message: "burguer created", data: createdBurguer });
-  } catch (error) {
-    console.error(error);
-    reply.status(500).send({ message: (error as Error).message });
+    return reply.status(201).send(item);
   }
 }
 
-export async function getItems(request: FastifyRequest, reply: FastifyReply) {
-  try {
-    const burguers = await itemService.getItems();
+// export async function createItem(request: FastifyRequest, reply: FastifyReply) {
+//   try {
+//     return reply
+//       .status(201)
+//       .send({ message: "burguer created", data: createdBurguer });
+//   } catch (error) {
 
-    return reply.status(200).send(burguers);
-  } catch (error) {
-    reply.status(500).send({ message: (error as Error).message });
-  }
-}
+// }
 
-export async function getItemById(
-  request: FastifyRequest,
-  reply: FastifyReply
-) {
-  try {
-    const getBurguerParamSchema = z.object({
-      id: z.coerce.number(),
-    });
+// export async function getItems(request: FastifyRequest, reply: FastifyReply) {
+//   try {
+//     const burguers = await itemService.getItems();
 
-    const { id } = getBurguerParamSchema.parse(request.params);
-    const burguer = await itemService.getItemById(id);
+//     return reply.status(200).send(burguers);
+//   } catch (error) {
+//     reply.status(500).send({ message: (error as Error).message });
+//   }
+// }
 
-    return reply.status(200).send(burguer);
-  } catch (error) {
-    reply.status(500).send({ message: (error as Error).message });
-  }
-}
+// export async function getItemById(
+//   request: FastifyRequest,
+//   reply: FastifyReply
+// ) {
+//   try {
+//     const getBurguerParamSchema = z.object({
+//       id: z.coerce.number(),
+//     });
 
-export async function updateItem(request: FastifyRequest, reply: FastifyReply) {
-  const getBurguerParamSchema = z.object({
-    id: z.coerce.number(),
-  });
+//     const { id } = getBurguerParamSchema.parse(request.params);
+//     const burguer = await itemService.getItemById(id);
 
-  const { id } = getBurguerParamSchema.parse(request.params);
+//     return reply.status(200).send(burguer);
+//   } catch (error) {
+//     reply.status(500).send({ message: (error as Error).message });
+//   }
+// }
 
-  const burgerData: any = request.body;
+// export async function updateItem(request: FastifyRequest, reply: FastifyReply) {
+//   const getBurguerParamSchema = z.object({
+//     id: z.coerce.number(),
+//   });
 
-  try {
-    const burguer = await itemService.updateItem(id, burgerData);
+//   const { id } = getBurguerParamSchema.parse(request.params);
 
-    return reply.status(200).send(burguer);
-  } catch (error) {
-    reply.status(500).send({ message: (error as Error).message });
-  }
-}
+//   const burgerData: any = request.body;
 
-export async function deleteItem(request: FastifyRequest, reply: FastifyReply) {
-  const getBurguerParamSchema = z.object({
-    id: z.coerce.number(),
-  });
+//   try {
+//     const burguer = await itemService.updateItem(id, burgerData);
 
-  const { id } = getBurguerParamSchema.parse(request.params);
+//     return reply.status(200).send(burguer);
+//   } catch (error) {
+//     reply.status(500).send({ message: (error as Error).message });
+//   }
+// }
 
-  try {
-    await itemService.deleteItem(id);
+// export async function deleteItem(request: FastifyRequest, reply: FastifyReply) {
+//   const getBurguerParamSchema = z.object({
+//     id: z.coerce.number(),
+//   });
 
-    return reply.status(204).send({ message: "buguer deleted" });
-  } catch (error) {
-    reply.status(500).send({ message: (error as Error).message });
-  }
-}
+//   const { id } = getBurguerParamSchema.parse(request.params);
+
+//   try {
+//     await itemService.deleteItem(id);
+
+//     return reply.status(204).send({ message: "buguer deleted" });
+//   } catch (error) {
+//     reply.status(500).send({ message: (error as Error).message });
+//   }
+// }
