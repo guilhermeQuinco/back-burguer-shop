@@ -24,4 +24,5 @@ export async function appRoutes(app: FastifyInstance) {
   const controller = container.resolve<ItemController>("ItemController");
 
   app.post("/items", controller.create.bind(controller));
+  app.get("/items", controller.list.bind(controller));
 }

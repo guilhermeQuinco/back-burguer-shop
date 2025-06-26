@@ -12,4 +12,10 @@ export class PrismaItemRepository implements IItemRepository {
 
     return item;
   }
+
+  async findAll(): Promise<Item[]> {
+    const items = await prisma.item.findMany({});
+
+    return items;
+  }
 }
