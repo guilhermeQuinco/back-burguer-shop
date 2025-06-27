@@ -1,28 +1,18 @@
 import { FastifyInstance } from "fastify";
 
-import {
-  addToCart,
-  changeQuantity,
-  getCartItems,
-  removeItemFromCart,
-} from "./controllers/cart.controller";
-// import {
-//   createItem,
-//   deleteItem,
-//   getItemById,
-//   getItems,
-//   updateItem,
-// } from "./controllers/item.controller";
-
-//   getCategories,
-//   getCategoryItems,
-// } from "./controllers/category.controller";
 import { container } from "tsyringe";
 import { ItemController } from "./controllers/item.controller";
+import { UserController } from "./controllers/user.controller";
 
 export async function appRoutes(app: FastifyInstance) {
-  const controller = container.resolve<ItemController>("ItemController");
+  const itemController = container.resolve<ItemController>("ItemController");
+  const userController = container.resolve<UserController>("UserController");
 
-  app.post("/items", controller.create.bind(controller));
-  app.get("/items", controller.list.bind(controller));
+  app.post("/items", itemController.create.bind(itemController));
+  app.get("/items", itemController.list.bind(itemController));
+  app.get("/items/:id", itemController.findById.bind(itemController));
+  app.delete("/items/:id", itemController.deleteItem.bind(itemController));
+
+  app.post("/users", userController.create.bind(userController));
+  app.get("/users/:id", userController.findById.bind(userController));
 }

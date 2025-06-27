@@ -1,4 +1,4 @@
-import { IItemRepository } from "@/repositories/interfaces/item-repository";
+import { IItemRepository } from "@/repositories/interfaces/item.repository";
 import { inject, injectable } from "tsyringe";
 
 interface ItemInput {
