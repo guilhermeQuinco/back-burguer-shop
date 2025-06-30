@@ -7,6 +7,7 @@ import { UserController } from "./controllers/user.controller";
 export async function appRoutes(app: FastifyInstance) {
   const itemController = container.resolve<ItemController>("ItemController");
   const userController = container.resolve<UserController>("UserController");
+  const cartController = container.resolve<>("UserController");
 
   app.post("/items", itemController.create.bind(itemController));
   app.get("/items", itemController.list.bind(itemController));

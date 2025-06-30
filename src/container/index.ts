@@ -1,9 +1,12 @@
 import { ItemController } from "@/http/controllers/item.controller";
 import { UserController } from "@/http/controllers/user.controller";
+import { ICartRepository } from "@/repositories/interfaces/cart.repository";
 import { IItemRepository } from "@/repositories/interfaces/item.repository";
 import { IUserRepository } from "@/repositories/interfaces/user.repository";
+import { PrismaCartRepository } from "@/repositories/prisma/prisma-cart.repository";
 import { PrismaItemRepository } from "@/repositories/prisma/prisma-item.repository";
 import { PrismaUserRepository } from "@/repositories/prisma/prisma-user.repository";
+import { AddToCartUseCase } from "@/use-cases/cart/add-to-cart/add-to-cart.use-case";
 import { CreateItemUseCase } from "@/use-cases/item/create-item/cretate-item.use-case";
 import { DeleteItemUseCase } from "@/use-cases/item/delete-item/delete-item.use-case";
 import { FindByIdItemUseCase } from "@/use-cases/item/find-by-id/find-by-id.use-case";
@@ -12,6 +15,7 @@ import { CreateUserUseCase } from "@/use-cases/user/create-user/create-user.use-
 import { FindUserByIdUseCase } from "@/use-cases/user/find-by-id/find-by-id.use-case";
 import { container } from "tsyringe";
 
+// Item
 container.registerSingleton<IItemRepository>(
   "ItemRepository",
   PrismaItemRepository
@@ -32,6 +36,7 @@ container.register("ItemController", {
   },
 });
 
+// User
 container.registerSingleton<IUserRepository>(
   "UserRepository",
   PrismaUserRepository
@@ -48,3 +53,10 @@ container.register("UserController", {
     );
   },
 });
+
+// Cart
+container.registerSingleton<ICartRepository>(
+  "CartRepository",
+  PrismaCartRepository
+);
+container.registerSingleton(AddToCartUseCase, AddToCartUseCase);
