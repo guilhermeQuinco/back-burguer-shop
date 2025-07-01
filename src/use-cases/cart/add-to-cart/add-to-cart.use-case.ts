@@ -1,6 +1,7 @@
 import { ICartRepository } from "@/repositories/interfaces/cart.repository";
-import { inject } from "tsyringe";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class AddToCartUseCase {
   constructor(
     @inject("CartRepository")

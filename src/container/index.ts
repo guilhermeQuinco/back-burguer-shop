@@ -1,3 +1,4 @@
+import { CartController } from "@/http/controllers/cart.controller";
 import { ItemController } from "@/http/controllers/item.controller";
 import { UserController } from "@/http/controllers/user.controller";
 import { ICartRepository } from "@/repositories/interfaces/cart.repository";
@@ -60,3 +61,8 @@ container.registerSingleton<ICartRepository>(
   PrismaCartRepository
 );
 container.registerSingleton(AddToCartUseCase, AddToCartUseCase);
+container.register("CartController", {
+  useFactory: (c) => {
+    return new CartController(c.resolve(AddToCartUseCase));
+  },
+});

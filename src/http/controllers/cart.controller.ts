@@ -1,12 +1,29 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import * as cartService from "@/services/cartService";
 import { z } from "zod";
+import { AddToCartUseCase } from "@/use-cases/cart/add-to-cart/add-to-cart.use-case";
 
-
-
-
+const cartBodySchema = z.object({
+  userId: z.string(),
+  itemId: z.number(),
+  quantity: z.number(),
+});
 export class CartController {
-  
+  constructor(private readonly addToCartUseCase: AddToCartUseCase) {}
+
+  async create(request: FastifyRequest, reply: FastifyReply) {
+    const { userId, itemId, quantity } = cartBodySchema.parse(request.body);
+
+    try {
+      const cart = await this.addToCartUseCase.execute(
+        userId,
+        itemId,
+        quantity
+      );
+      reply.status(201).send({ message: "Item added to cart!", data: cart });
+    } catch (error) {
+      throw new Error("Burguer not found!");
+    }
+  }
 }
 
 // export async function addToCart(request: FastifyRequest, reply: FastifyReply) {
